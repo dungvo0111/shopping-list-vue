@@ -12,7 +12,7 @@
       <p>Total: {{ total }}</p>
     </div>
     <button v-if="products.length" @click="checkOut">Check out</button>
-    <p>{{message}}</p>
+    <p class="message">{{ message }}</p>
   </div>
 </template>
 
@@ -22,16 +22,18 @@ import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   name: "CartList",
   computed: {
-    ...mapState({
+    ...mapState('cart',{
       products: (state) => state.cart,
-      message: (state) => state.message
+      message: (state) => state.message,
     }),
-    ...mapGetters({
+    ...mapGetters("cart", {
       total: "cartTotal",
     }),
   },
   methods: {
-    ...mapActions(["checkOut"]),
+    ...mapActions("cart", {
+      checkOut: "checkOut",
+    }),
   },
 };
 </script>
@@ -75,5 +77,10 @@ button {
 
 button:not(:disabled) {
   cursor: pointer;
+}
+
+.message {
+    margin-top: 30px;
+    font-weight: bold;
 }
 </style>

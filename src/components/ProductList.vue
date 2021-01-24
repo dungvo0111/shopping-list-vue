@@ -22,11 +22,16 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   name: "ProductList",
-  computed: mapState({
+  computed: mapState("products", {
     products: (state) => state.products,
   }),
   methods: {
-    ...mapActions(["fetchProducts", "addItem"]),
+    ...mapActions("products", {
+      fetchProducts: "fetchProducts",
+    }),
+    ...mapActions("cart", {
+      addItem: "addItem",
+    }),
   },
   created() {
     this.fetchProducts();
