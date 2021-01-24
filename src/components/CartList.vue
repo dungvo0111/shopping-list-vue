@@ -1,0 +1,66 @@
+<template>
+  <div class="wrapper">
+    <h1>Cart List</h1>
+    <ul class="products">
+      <li v-for="product in products" :key="product.id" class="product">
+        <p>
+          {{ product.title }} - {{ product.price }} - {{ product.inventory }}
+        </p>
+      </li>
+    </ul>
+    <div class="totalWrapper" v-if="products.length > 0">
+      <p>Total: {{ total }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapActions, mapState, mapGetters } from "vuex";
+
+export default {
+  name: "CartList",
+  computed: {
+    ...mapState({
+      products: (state) => state.cart,
+    }),
+    ...mapGetters({
+      total: "cartTotal",
+    }),
+  },
+  methods: {
+    ...mapActions(["fetchProducts"]),
+  },
+};
+</script>
+
+<style scoped>
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.products {
+  max-width: 400px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.product {
+  list-style: none;
+  margin-bottom: 30px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.totalWrapper {
+  text-align: left;
+  max-width: 400px;
+  width: 100%;
+  font-weight: bold;
+}
+</style>
