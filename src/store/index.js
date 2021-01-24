@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     products: [],
     cart: [],
+    message: null,
   },
   getters: {
     cartTotal: (state) => {
@@ -32,10 +33,21 @@ export default new Vuex.Store({
       state.cart.map((product) => {
         if (product.id === id) product.inventory++;
       });
+      state.message = null;
     },
 
     addItemToCart(state, newItem) {
       state.cart = [...state.cart, newItem];
+      state.message = null;
+    },
+
+    clearCart(state) {
+      state.cart = [];
+      state.message = "Check out success!!!";
+    },
+
+    checkOutFailed(state) {
+      state.message = "Check out failed! Please try again."
     },
   },
   actions: {
@@ -53,6 +65,16 @@ export default new Vuex.Store({
         } else {
           commit("addItemToCart", { ...product, inventory: 1 });
         }
+      }
+    },
+
+    checkOut({ commit, state }) {
+      if (state.cart) {
+        shop.buyProducts(
+          state.cart,
+          () => commit("clearCart"),
+          () => commit("checkOutFailed")
+        );
       }
     },
   },

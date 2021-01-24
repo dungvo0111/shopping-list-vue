@@ -11,6 +11,8 @@
     <div class="totalWrapper" v-if="products.length > 0">
       <p>Total: {{ total }}</p>
     </div>
+    <button v-if="products.length" @click="checkOut">Check out</button>
+    <p>{{message}}</p>
   </div>
 </template>
 
@@ -22,13 +24,14 @@ export default {
   computed: {
     ...mapState({
       products: (state) => state.cart,
+      message: (state) => state.message
     }),
     ...mapGetters({
       total: "cartTotal",
     }),
   },
   methods: {
-    ...mapActions(["fetchProducts"]),
+    ...mapActions(["checkOut"]),
   },
 };
 </script>
@@ -62,5 +65,15 @@ export default {
   max-width: 400px;
   width: 100%;
   font-weight: bold;
+  margin-bottom: 30px;
+}
+
+button {
+  float: right;
+  padding: 2px 8px;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
 }
 </style>
