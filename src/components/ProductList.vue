@@ -4,7 +4,7 @@
     <ul class="products">
       <li v-for="product in products" :key="product.id" class="product">
         <p>
-          {{ product.title }} - {{ product.price }} - {{ product.inventory }}
+          {{ product.title }} - {{ product.price | toCurrency }} - {{ product.inventory }}
         </p>
         <button
           @click="addItem(product.id)"

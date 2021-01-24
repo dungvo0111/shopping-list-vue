@@ -4,12 +4,13 @@
     <ul class="products">
       <li v-for="product in products" :key="product.id" class="product">
         <p>
-          {{ product.title }} - {{ product.price }} - {{ product.inventory }}
+          {{ product.title }} - {{ product.price | toCurrency }} -
+          {{ product.inventory }}
         </p>
       </li>
     </ul>
     <div class="totalWrapper" v-if="products.length > 0">
-      <p>Total: {{ total }}</p>
+      <p>Total: {{ total | toCurrency }}</p>
     </div>
     <button v-if="products.length" @click="checkOut">Check out</button>
     <p class="message">{{ message }}</p>
@@ -22,7 +23,7 @@ import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   name: "CartList",
   computed: {
-    ...mapState('cart',{
+    ...mapState("cart", {
       products: (state) => state.cart,
       message: (state) => state.message,
     }),
@@ -80,7 +81,7 @@ button:not(:disabled) {
 }
 
 .message {
-    margin-top: 30px;
-    font-weight: bold;
+  margin-top: 30px;
+  font-weight: bold;
 }
 </style>
