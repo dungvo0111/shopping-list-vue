@@ -5,6 +5,7 @@ const cart = {
   state: {
     cart: [],
     message: null,
+    loading: false,
   },
   getters: {
     cartTotal: (state) => {
@@ -37,6 +38,10 @@ const cart = {
     clearMessage(state) {
       state.message = null;
     },
+
+    setLoading(state) {
+      state.loading = !state.loading;
+    },
   },
   actions: {
     addItem({ commit, state, dispatch, rootState }, id) {
@@ -55,16 +60,23 @@ const cart = {
       }
     },
 
-    clearMessage({commit}) {
+    clearMessage({ commit }) {
       commit("clearMessage");
     },
 
     checkOut({ commit, state }) {
+      commit("setLoading");
       if (state.cart) {
         shop.buyProducts(
           state.cart,
-          () => commit("clearCart"),
-          () => commit("checkOutFailed")
+          () => {
+            commit("setLoading");
+            commit("clearCart");
+          },
+          () => {
+            commit("setLoading");
+            commit("checkOutFailed");
+          }
         );
       }
     },

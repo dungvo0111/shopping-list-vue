@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <h1>Cart List</h1>
-    <ul class="products">
+    <ul class="products" v-if="products.length > 0">
       <li v-for="product in products" :key="product.id" class="product">
         <p>
           {{ product.title }} - {{ product.price | toCurrency }} -
@@ -13,7 +13,10 @@
       <p>Total: {{ total | toCurrency }}</p>
     </div>
     <button v-if="products.length" @click="checkOut">Check out</button>
-    <p class="message">{{ message }}</p>
+    <p class="message" v-if="!loading">{{ message }}</p>
+    <div v-else class="loaderWrapper">
+      <div class="ui active inline text loader">Loading</div>
+    </div>
   </div>
 </template>
 
@@ -26,6 +29,7 @@ export default {
     ...mapState("cart", {
       products: (state) => state.cart,
       message: (state) => state.message,
+      loading: (state) => state.loading,
     }),
     ...mapGetters("cart", {
       total: "cartTotal",
@@ -68,7 +72,7 @@ export default {
   max-width: 400px;
   width: 100%;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 button {
@@ -83,5 +87,9 @@ button:not(:disabled) {
 .message {
   margin-top: 30px;
   font-weight: bold;
+}
+
+.loaderWrapper {
+  margin-top: 20px;
 }
 </style>

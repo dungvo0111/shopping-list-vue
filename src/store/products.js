@@ -4,6 +4,7 @@ const products = {
   namespaced: true,
   state: {
     products: [],
+    loading: false,
   },
   mutations: {
     getAllProducts(state, products) {
@@ -15,10 +16,18 @@ const products = {
         if (product.id === id) product.inventory--;
       });
     },
+
+    setLoading(state) {
+      state.loading = !state.loading;
+    },
   },
   actions: {
     fetchProducts({ commit }) {
-      shop.getProducts((products) => commit("getAllProducts", products));
+      commit("setLoading");
+      shop.getProducts((products) => {
+        commit("setLoading");
+        commit("getAllProducts", products);
+      });
     },
   },
 };

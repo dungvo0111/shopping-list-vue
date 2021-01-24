@@ -1,10 +1,11 @@
 <template>
   <div class="wrapper">
     <h1>Product List</h1>
-    <ul class="products">
+    <ul class="products" v-if="!loading && products.length > 0">
       <li v-for="product in products" :key="product.id" class="product">
         <p>
-          {{ product.title }} - {{ product.price | toCurrency }} - {{ product.inventory }}
+          {{ product.title }} - {{ product.price | toCurrency }} -
+          {{ product.inventory }}
         </p>
         <button
           @click="addItem(product.id)"
@@ -14,6 +15,9 @@
         </button>
       </li>
     </ul>
+    <div class="loaderWrapper" v-else>
+      <div class="ui active inline text loader loading">Loading</div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +28,7 @@ export default {
   name: "ProductList",
   computed: mapState("products", {
     products: (state) => state.products,
+    loading: (state) => state.loading,
   }),
   methods: {
     ...mapActions("products", {
@@ -69,5 +74,9 @@ button {
 
 button:not(:disabled) {
   cursor: pointer;
+}
+
+.loaderWrapper {
+  margin: 30px;
 }
 </style>
